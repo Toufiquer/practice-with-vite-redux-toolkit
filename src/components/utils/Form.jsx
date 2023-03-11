@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addTransactionActions } from "../redux/addTransaction/addTransactionSlice";
 
 const Form = () => {
   const [fromChecked, setFromChecked] = React.useState({
@@ -6,9 +8,24 @@ const Form = () => {
     value2: "expense",
     selectedValue: "income",
   });
+  const [name, setName] = React.useState("");
+  const [amount, setAmount] = React.useState("");
+  const dispatch = useDispatch();
+  const refresh = () => {
+    setName("");
+    setAmount("");
+  };
   const handleChange = (event) => {
     event.preventDefault();
-    console.log(fromChecked);
+    dispatch(
+      addTransactionActions.addTransaction({
+        type: fromChecked.selectedValue,
+        name,
+        amount,
+      })
+    );
+
+    refresh();
   };
   return (
     <>
@@ -22,6 +39,8 @@ const Form = () => {
               type="text"
               name="transaction_name"
               placeholder="My Salary"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -61,7 +80,13 @@ const Form = () => {
 
           <div className="form-group">
             <label htmlFor="transaction_amount">Amount</label>
-            <input type="number" placeholder="300" name="transaction_amount" />
+            <input
+              type="number"
+              placeholder="300"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              name="transaction_amount"
+            />
           </div>
 
           <button className="btn">Add Transaction</button>

@@ -10,7 +10,7 @@ const addTransactionSlice = createSlice({
   initialState,
   reducers: {
     addTransaction: (state, action) => {
-      state.tranSection.push(action.payload);
+      state.totalTransaction.push(action.payload);
     },
   },
 });
