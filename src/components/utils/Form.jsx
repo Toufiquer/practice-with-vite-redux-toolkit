@@ -1,8 +1,9 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addTransactionActions } from "../redux/addTransaction/addTransactionSlice";
 
 const Form = () => {
+  const { isEdit, edit } = useSelector((state) => state.totalTransaction);
   const [fromChecked, setFromChecked] = React.useState({
     value1: "income",
     value2: "expense",
@@ -11,21 +12,44 @@ const Form = () => {
   const [name, setName] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (isEdit) {
+      setName(edit.name);
+      setAmount(edit.amount);
+      setFromChecked({
+        value1: "income",
+        value2: "expense",
+        selectedValue: edit.selectedValue,
+      });
+    }
+  }, [isEdit]);
   const refresh = () => {
     setName("");
     setAmount("");
   };
+  const dispatchAction = (isUpdate = false) => {
+    if (!isUpdate) {
+      dispatch(
+        addTransactionActions.addTransaction({
+          type: fromChecked.selectedValue,
+          name,
+          amount,
+        })
+      );
+    } else {
+      dispatch(
+        addTransactionActions.updateTransaction({
+          type: fromChecked.selectedValue,
+          name,
+          amount,
+        })
+      );
+    }
+    refresh();
+  };
   const handleChange = (event) => {
     event.preventDefault();
-    dispatch(
-      addTransactionActions.addTransaction({
-        type: fromChecked.selectedValue,
-        name,
-        amount,
-      })
-    );
-
-    refresh();
+    dispatchAction();
   };
   return (
     <>
@@ -91,7 +115,14 @@ const Form = () => {
 
           <button className="btn">Add Transaction</button>
 
-          <button className="btn cancel_edit">Cancel Edit</button>
+          {isEdit && (
+            <button
+              onClick={() => dispatchAction(true)}
+              className="btn cancel_edit"
+            >
+              Cancel Edit
+            </button>
+          )}
         </div>
       </form>
     </>

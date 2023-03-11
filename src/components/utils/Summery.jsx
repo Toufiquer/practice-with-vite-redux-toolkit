@@ -2,7 +2,7 @@ import React from "react";
 
 import deleteImg from "../../components/images/delete.svg";
 import editImg from "../../components/images/edit.svg";
-const Summery = () => {
+const Summery = ({ summary }) => {
   return (
     <>
       <li className="transaction income">
