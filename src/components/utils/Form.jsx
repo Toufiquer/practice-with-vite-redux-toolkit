@@ -12,8 +12,9 @@ const Form = () => {
   const [name, setName] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const dispatch = useDispatch();
+
   useEffect(() => {
-    if (isEdit) {
+    if (edit.id && isEdit) {
       setName(edit.name);
       setAmount(edit.amount);
       setFromChecked({
@@ -22,7 +23,8 @@ const Form = () => {
         selectedValue: edit.selectedValue,
       });
     }
-  }, [isEdit]);
+  }, [isEdit, edit.id]);
+
   const refresh = () => {
     setName("");
     setAmount("");
@@ -44,6 +46,7 @@ const Form = () => {
           amount,
         })
       );
+      dispatch(addTransactionActions.cancelTransaction());
     }
     refresh();
   };
@@ -113,7 +116,9 @@ const Form = () => {
             />
           </div>
 
-          <button className="btn">Add Transaction</button>
+          <button className="btn">
+            {isEdit ? "Update" : "Add"} Transaction
+          </button>
 
           {isEdit && (
             <button

@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Card from "../../components/utils/Card";
 import Form from "../../components/utils/Form";
-import Summery from "../../components/utils/Summery";
+import Summery from "../../components/utils/Summary";
 const Home = () => {
   const { totalTransaction, isLoading, isError, error } = useSelector(
     (state) => state.totalTransaction
@@ -22,7 +22,7 @@ const Home = () => {
   }
   if (!isLoading && !isError && totalTransaction.length > 0) {
     content = totalTransaction.map((curr) => (
-      <Summery key={curr.id} summery={curr} />
+      <Summery key={curr.id} summary={curr} />
     ));
   }
   return (
