@@ -1,7 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
+import { fetchTransactionApi } from "../../components/redux/addTransaction/addTransactionSlice";
 import Card from "../../components/utils/Card";
 import Form from "../../components/utils/Form";
 import Summery from "../../components/utils/Summary";
@@ -9,6 +10,10 @@ const Home = () => {
   const { totalTransaction, isLoading, isError, error } = useSelector(
     (state) => state.totalTransaction
   );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTransactionApi());
+  }, []);
   // Depside what to render
   let content = null;
   if (isLoading && !isError) {
